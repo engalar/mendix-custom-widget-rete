@@ -1,6 +1,6 @@
 import { getObjects, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
 import { configure, makeObservable, observable, when } from "mobx";
-import { XflowContainerProps } from "../../typings/XflowProps";
+import { ReteContainerProps } from "../../typings/ReteProps";
 import { OptionItem } from "./objects/OptionItem";
 
 configure({ enforceActions: "observed", isolateGlobalState: true, useProxies: "never" });
@@ -15,7 +15,7 @@ export class Store {
 
     options?: OptionItem[];
 
-    constructor(public mxOption: XflowContainerProps) {
+    constructor(public mxOption: ReteContainerProps) {
         makeObservable(this, { mxOption: observable, options: observable });
         when(
             () => !!this.mxOption.mxObject,

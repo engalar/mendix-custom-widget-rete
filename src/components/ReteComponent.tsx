@@ -1,12 +1,11 @@
-import { createElement, useEffect, useLayoutEffect, useRef } from "react";
+import { createElement, useEffect, useRef } from "react";
 import { DagreLayout } from '@antv/layout';
 import { Store } from "../store";
 
 import { Graph, Model } from '@antv/x6';
 import { autorun } from "mobx";
-import { usePrevious, useSelections } from "ahooks";
 import { EdgeMxObject, OptionItem } from "../store/objects/OptionItem";
-import { difference } from "lodash-es";
+import { debounce } from "lodash-es";
 
 
 //#region graph register
@@ -83,20 +82,8 @@ export interface ReteComponentProps {
 
 export function ReteComponent(props: ReteComponentProps) {
     const graphRef = useRef<any>();
-    const { selected, toggle, setSelected } = useSelections<string>([]);
-    const preSelected = usePrevious(selected);
-
-    useLayoutEffect(() => {
-        if (difference(preSelected, selected).length > 0
-            || difference(selected, preSelected ?? []).length > 0)
-            props.store.onSelect(selected);
-        return () => {
-        }
-    }, [selected]);
-
 
     useEffect(() => {
-        props.store.setSelected = setSelected;
         //#region 实例化图表
         const graph: Graph = new Graph({
             container: graphRef.current,
@@ -111,19 +98,23 @@ export function ReteComponent(props: ReteComponentProps) {
             interacting: {
                 edgeMovable: false,
                 nodeMovable: false,
-            }
+            },
+            selecting: {
+                enabled: true,
+                multiple: true,
+                rubberband: false,
+                movable: false,
+                showNodeSelectionBox: true,
+                modifiers: 'ctrl'
+            },
         });
         props.store.graph = graph;
         //#endregion
 
         //#region 图表事件
-        graph.on('blank:click', () => {
-            setSelected([]);
-        })
-
-        graph.on('node:click', ({ cell }) => {
-            toggle(cell.id);
-        })
+        graph.on('selection:changed', debounce((e) => {
+            props.store.onSelect(e.selected.map((d: any) => d.id));
+        }, 150))
         //#endregion
 
         //#region 响应mobx

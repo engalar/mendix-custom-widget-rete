@@ -6,6 +6,7 @@ import {
     getObjects,
     getReferencePart
 } from "@jeltemx/mendix-react-widget-utils";
+import { difference } from "lodash-es";
 import { configure, makeObservable, observable, when } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
 import { EdgeMxObject, OptionItem } from "./objects/OptionItem";
@@ -15,7 +16,6 @@ configure({ enforceActions: "observed", isolateGlobalState: true, useProxies: "n
 export class Store {
     sub?: number;
     graph?: Graph;
-    setSelected?: (guids: string[]) => void;
     /**
      * dispose
      */
@@ -68,7 +68,14 @@ export class Store {
                                 this.mxOption.mxObject?.getReferences(
                                     getReferencePart(mxOption.entitySelect, "referenceAttr")
                                 ) ?? [];
-                            this.setSelected!(selectedGuids);
+                            if (this.graph) {
+                                const selected = this.graph.getSelectedCells().map(d => d.id);
+                                if (
+                                    difference(selectedGuids, selected).length > 0 ||
+                                    difference(selected, selectedGuids).length > 0
+                                )
+                                    this.graph.resetSelection(selectedGuids);
+                            }
                             //#endregion
 
                             const guids = this.mxOption.mxObject?.getReferences(activityRefPart);

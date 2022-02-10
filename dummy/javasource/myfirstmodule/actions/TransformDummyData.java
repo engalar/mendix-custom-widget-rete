@@ -13,15 +13,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
-
 import myfirstmodule.proxies.DummyEdge;
 import myfirstmodule.proxies.DummyNode;
 import myfirstmodule.proxies.Helper;
 import myfirstmodule.proxies.Node;
+import myfirstmodule.proxies.NodeType;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
@@ -43,6 +42,7 @@ public class TransformDummyData extends CustomJavaAction<IMendixObject> {
 			Node node = Node.initialize(getContext(), mo);
 			DummyNode dummyNode = new DummyNode(getContext());
 			dummyNode.setLabel(node.getTitle());
+			dummyNode.setNodeType(node.getNodeType().getCaption());
 			dummyNode.setDummyNode_Node(node);
 			dummyNodeMap.put(mo.getId().toString(), dummyNode);
 		}

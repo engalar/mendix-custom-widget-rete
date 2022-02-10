@@ -3,8 +3,9 @@ export class BaseMxObject {
     constructor(public guid: string) {
         this.sub = mx.data.subscribe({
             guid: guid,
-            callback(guid) {
-                console.log(guid);
+            callback: guid => {
+                //@ts-ignore
+                this.onChange(guid);
             }
         });
     }
@@ -18,4 +19,5 @@ export class BaseMxObject {
             this.sub = undefined;
         }
     }
+    onChange?: (guid: string) => void;
 }

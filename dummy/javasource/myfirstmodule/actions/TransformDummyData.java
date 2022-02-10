@@ -43,6 +43,7 @@ public class TransformDummyData extends CustomJavaAction<IMendixObject> {
 			Node node = Node.initialize(getContext(), mo);
 			DummyNode dummyNode = new DummyNode(getContext());
 			dummyNode.setLabel(node.getTitle());
+			dummyNode.setDummyNode_Node(node);
 			dummyNodeMap.put(mo.getId().toString(), dummyNode);
 		}
 

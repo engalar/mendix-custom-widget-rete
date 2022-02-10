@@ -57,18 +57,20 @@
     "webpack-bundle-analyzer": "^3.6.0",
     "@types/jquery": "^3.5.5",
     "@types/jquery-mousewheel": "^3.1.8",
-    "@hot-loader/react-dom": "^16.8.6"
+    "@hot-loader/react-dom": "^16.8.6",
+    "@types/lodash-es": "^4.17.6"
   },
   "dependencies": {
     "@antv/x6": "^1.29.1",
     "@antv/layout": "^0.1.24",
-    "ahooks": "^2.10.14",
+    "ahooks": "^3.1.9",
     "@bem-react/classname": "^1.5.6",
     "@jeltemx/mendix-react-widget-utils": "^0.9.0",
     "antd": "^4.15.5",
     "big.js": "^5.2.2",
     "classnames": "^2.2.6",
     "mobx": "^6.3.10",
-    "mobx-react": "^7.2.1"
+    "mobx-react": "^7.2.1",
+    "lodash-es": "^4.17.21"
   }
 }

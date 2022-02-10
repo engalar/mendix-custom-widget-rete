@@ -1,3 +1,4 @@
+import { Graph } from "@antv/x6";
 import {
     executeMicroflow,
     getObject,
@@ -5,7 +6,7 @@ import {
     getObjects,
     getReferencePart
 } from "@jeltemx/mendix-react-widget-utils";
-import { configure, makeObservable, observable, runInAction, when } from "mobx";
+import { configure, makeObservable, observable, when } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
 import { EdgeMxObject, OptionItem } from "./objects/OptionItem";
 
@@ -13,6 +14,7 @@ configure({ enforceActions: "observed", isolateGlobalState: true, useProxies: "n
 
 export class Store {
     sub?: number;
+    graph?: Graph;
     setSelected?: (guids: string[]) => void;
     /**
      * dispose
@@ -118,10 +120,8 @@ export class Store {
             this.options.delete(guid);
         } else {
             //@ts-ignore
-            runInAction(() => {
-                this.options.get(guid)!.label = d.get(this.mxOption.activityLabel);
-                this.options.set(guid, this.options.get(guid)!);
-            });
+            this.options.get(guid)!.label = d.get(this.mxOption.activityLabel);
+            this.graph?.getCellById(guid).setAttrByPath("text/text", d.get(this.mxOption.activityLabel));
         }
     }
 }

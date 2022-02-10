@@ -113,6 +113,7 @@ export function ReteComponent(props: ReteComponentProps) {
                 nodeMovable: false,
             }
         });
+        props.store.graph = graph;
         //#endregion
 
         //#region 图表事件

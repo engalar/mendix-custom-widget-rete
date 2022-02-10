@@ -1,7 +1,7 @@
 import { getObjects, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
 import { configure, makeObservable, observable, when } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
-import { OptionItem } from "./objects/OptionItem";
+import { EdgeMxObject, OptionItem } from "./objects/OptionItem";
 
 configure({ enforceActions: "observed", isolateGlobalState: true, useProxies: "never" });
 
@@ -14,9 +14,10 @@ export class Store {
     }
 
     options?: OptionItem[];
+    edgets?: EdgeMxObject[];
 
     constructor(public mxOption: ReteContainerProps) {
-        makeObservable(this, { mxOption: observable, options: observable });
+        makeObservable(this, { mxOption: observable, edgets: observable, options: observable });
         when(
             () => !!this.mxOption.mxObject,
             () => {
@@ -28,6 +29,15 @@ export class Store {
                         this.options = objs?.map(
                             d => new OptionItem(d.getGuid(), d.get(this.mxOption.activityLabel) as string)
                         );
+                    });
+                }
+
+                const edgeGuids = this.mxOption.mxObject?.getReferences(
+                    getReferencePart(this.mxOption.edges, "referenceAttr")
+                );
+                if (edgeGuids) {
+                    getObjects(edgeGuids).then(objs => {
+                        this.edgets = objs?.map(d => new EdgeMxObject(d.getGuid(), this.mxOption));
                     });
                 }
             },

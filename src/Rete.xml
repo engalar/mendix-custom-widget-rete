@@ -7,16 +7,50 @@
     <icon></icon>
     <properties>
         <propertyGroup caption="通用">
-            <property key="activitys" type="entity" pathType="referenceSet" isPath="yes" required="true" allowNonPersistableEntities="true">
-                <caption>活动</caption>
+            <propertyGroup caption="数据源">
+                <property key="activitys" type="entity" pathType="referenceSet" isPath="yes" required="true" allowNonPersistableEntities="true">
+                    <caption>活动</caption>
+                    <description></description>
+                </property>
+                <property key="activityType" type="attribute" entityProperty="activitys" required="true">
+                    <caption>活动类型</caption>
+                    <description></description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="activityLabel" type="attribute" entityProperty="activitys" required="true">
+                    <caption>活动标题</caption>
+                    <description></description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="edges" type="entity" pathType="referenceSet" isPath="yes" required="true" allowNonPersistableEntities="true">
+                    <caption>边</caption>
+                    <description></description>
+                </property>
+                <property key="entitySource" type="entity" required="true" pathType="reference" isPath="yes" allowNonPersistableEntities="true" entityProperty="edges">
+                    <caption>源活动</caption>
+                    <description></description>
+                </property>
+                <property key="entityTarget" type="entity" required="true" pathType="reference" isPath="yes" allowNonPersistableEntities="true" entityProperty="edges">
+                    <caption>目标活动</caption>
+                    <description></description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="选择">
+                <property key="entitySelect" type="entity" required="true" pathType="referenceSet" isPath="yes" allowNonPersistableEntities="true">
+                    <caption>选择</caption>
+                    <description></description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="事件">
+            <property key="mfSelect" type="microflow" required="true">
+                <caption>选择</caption>
                 <description></description>
-            </property>
-            <property key="activityLabel" type="attribute" entityProperty="activitys" required="true">
-                <caption>活动标题</caption>
-                <description></description>
-                <attributeTypes>
-                    <attributeType name="String" />
-                </attributeTypes>
+                <returnType type="Void" />
             </property>
         </propertyGroup>
     </properties>

@@ -18,19 +18,36 @@ interface CommonProps {
     style: string;
 }
 
-export interface ReteContainerProps extends CommonProps {
-    activitys: string;
+interface _W {
+    // activityLabel: "Label"
+    // activityType: "NodeType"
+    // activitys: "MyFirstModule.Helper_DummyNode/MyFirstModule.DummyNode"
+    // class: "mx-name-rete1 "
+    // edges: "MyFirstModule.Helper_DummyEdge/MyFirstModule.DummyEdge"
+    // entitySelect: "MyFirstModule.Helper_DummyNode_Select/MyFirstModule.DummyNode"
+    // entitySource: "MyFirstModule.DummyEdge_DummyNode_Source/MyFirstModule.DummyNode"
+    // entityTarget: "MyFirstModule.DummyEdge_DummyNode_Target/MyFirstModule.DummyNode"
+    // friendlyId: "MyFirstModule.Home.rete1"
+    // mfSelect: "MyFirstModule.Act_Select"
+
     activityLabel: string;
+    activityType: string;
+    activitys: string;
+    class: string;
+    edges: string;
+    entitySelect: string;
+    entitySource: string;
+    entityTarget: string;
+    friendlyId: string;
+    mfSelect: string;
 }
 
-export interface RetePreviewProps {
+export interface ReteContainerProps extends _W, CommonProps {}
+
+export interface RetePreviewProps extends _W {
     class: string;
     style: string;
     styleObject: CSSProperties;
-    activitys: string;
-    activityLabel: string;
 }
 
-export interface VisibilityMap {
-    myString: boolean;
-}
+export interface VisibilityMap extends _W {}

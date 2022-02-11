@@ -2,7 +2,7 @@ import { DagreLayout } from "@antv/layout";
 import { Graph, Model } from "@antv/x6";
 import { executeMicroflow, getObjectContext, getObjects, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
 import { difference } from "lodash-es";
-import { autorun, computed, configure, makeObservable, observable, when } from "mobx";
+import { computed, configure, makeObservable, observable, toJS, when } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
 import { EdgeMxObject, NodeMxObject } from "./objects/OptionItem";
 
@@ -31,6 +31,8 @@ export class Store {
             edges: Array.from<EdgeMxObject>(this.edges.values()).map(d => d.model)
         };
 
+        console.log(111, model);
+
         const dagreLayout = new DagreLayout({
             type: "dagre",
             rankdir: "LR",
@@ -44,6 +46,11 @@ export class Store {
     }
 
     update() {
+        if (this.mxOption.mxObject) {
+            this.selectedGuids =
+                this.mxOption.mxObject.getReferences(getReferencePart(this.mxOption.entitySelect, "referenceAttr")) ??
+                [];
+        }
         //#region 更新节点
         const activityRefPart = getReferencePart(this.mxOption.activitys, "referenceAttr");
         const nodeGuids = this.mxOption.mxObject?.getReferences(activityRefPart) ?? [];
@@ -86,6 +93,15 @@ export class Store {
         //#endregion
     }
 
+    drawSelection() {
+        if (this.graph && this.mxOption.mxObject !== undefined) {
+            const selected = this.graph.getSelectedCells().map(d => d.id);
+            if (!isSameGuids(this.selectedGuids, selected)) {
+                this.graph.resetSelection(toJS(this.selectedGuids));
+            }
+        }
+    }
+
     constructor(public mxOption: ReteContainerProps) {
         makeObservable(this, {
             mxOption: observable,
@@ -95,26 +111,6 @@ export class Store {
             selectedGuids: observable,
             graph: observable
         });
-
-        autorun(
-            () => {
-                //#region 更新视图的选择集
-                if (this.graph && this.mxOption.mxObject !== undefined) {
-                    this.selectedGuids =
-                        this.mxOption.mxObject.getReferences(
-                            getReferencePart(mxOption.entitySelect, "referenceAttr")
-                        ) ?? [];
-                    const selected = this.graph.getSelectedCells().map(d => d.id);
-                    if (
-                        difference(this.selectedGuids, selected).length > 0 ||
-                        difference(selected, this.selectedGuids).length > 0
-                    )
-                        this.graph.resetSelection(this.selectedGuids);
-                }
-                //#endregion
-            },
-            { name: "更新视图(选择集)" }
-        );
 
         when(
             () => !!this.mxOption.mxObject,
@@ -126,6 +122,10 @@ export class Store {
                         guid: this.mxOption.mxObject!.getGuid(),
                         callback: () => {
                             this.update();
+                            //等待视图刷新
+                            setTimeout(() => {
+                                this.drawSelection();
+                            }, 1);
                         }
                     },
                     //@ts-ignore
@@ -141,10 +141,16 @@ export class Store {
     }
 
     onSelect(guids: string[]) {
-        if (!this.mxOption.mxObject) {
+        console.debug("rete[select:view]", guids, this.selectedGuids.toString());
+        if (!this.mxOption.mxObject || isSameGuids(guids, this.selectedGuids)) {
+            console.debug("rete[select:view] 视图 和 模型 一致，不触发选择动作", guids, this.selectedGuids);
             return;
         }
         this.mxOption.mxObject.set(getReferencePart(this.mxOption.entitySelect, "referenceAttr"), guids);
         executeMicroflow(this.mxOption.mfSelect, getObjectContext(this.mxOption.mxObject), this.mxOption.mxform);
     }
+}
+
+function isSameGuids(a: string[], b: string[]): boolean {
+    return difference(a, b).length === 0 && difference(b, a).length === 0;
 }

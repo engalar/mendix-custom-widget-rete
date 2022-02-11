@@ -111,8 +111,9 @@ export function ReteComponent(props: ReteComponentProps) {
 
         //#region 图表事件
         graph.on('selection:changed', debounce((e) => {
-            props.store.onSelect(e.selected.map((d: any) => d.id));
-        }, 150))
+            const guids = e.selected.map((d: any) => d.id);
+            props.store.onSelect(guids);
+        }, 150));
         //#endregion
 
         //#region 响应mobx

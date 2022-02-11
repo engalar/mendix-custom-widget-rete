@@ -9,7 +9,7 @@ export class BaseMxObject {
             }
         });
     }
-    get mxObject(): mendix.lib.MxObject {
+    get mxObject(): mendix.lib.MxObject | undefined {
         //@ts-ignore
         return mx.data.getCachedObject(this.guid);
     }

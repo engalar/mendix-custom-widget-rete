@@ -66,8 +66,8 @@ public class TransformDummyData extends CustomJavaAction<IMendixObject> {
 					DummyEdge dummyEdgeLeft = new DummyEdge(getContext());
 					DummyEdge dummyEdgeRight = new DummyEdge(getContext());
 
-					dummyEdgeLeft.setDummyEdge_DummyNode_Source(dummyNodeMap.get(source));
-					dummyEdgeRight.setDummyEdge_DummyNode_Source(dummyNodeMap.get(source));
+					dummyEdgeLeft.setDummyEdge_DummyNode_Source(source);
+					dummyEdgeRight.setDummyEdge_DummyNode_Source(source);
 
 					dummyEdgeLeft.setDummyEdge_DummyNode_Target(dummyNodeMap.get(targetLeft));
 					dummyEdgeRight.setDummyEdge_DummyNode_Target(dummyNodeMap.get(targetRight));

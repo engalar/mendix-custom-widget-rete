@@ -1,10 +1,8 @@
 import { createElement, useEffect, useRef } from "react";
-import { DagreLayout } from '@antv/layout';
 import { Store } from "../store";
 
-import { Graph, Model } from '@antv/x6';
+import { Graph } from '@antv/x6';
 import { autorun } from "mobx";
-import { EdgeMxObject, OptionItem } from "../store/objects/OptionItem";
 import { debounce } from "lodash-es";
 
 
@@ -119,23 +117,9 @@ export function ReteComponent(props: ReteComponentProps) {
 
         //#region 响应mobx
         autorun(() => {
-            const model: Model.FromJSONData = {
-                nodes: Array.from<OptionItem>(props.store.options.values()).map(d => d.model),
-                edges: Array.from<EdgeMxObject>(props.store.edges.values()).map(d => d.model),
-            };
-
-            const dagreLayout = new DagreLayout({
-                type: 'dagre',
-                rankdir: 'LR',
-                align: 'UR',
-                ranksep: 30,
-                nodesep: 15,
-                controlPoints: true,
-            });
-
-            graph.fromJSON(dagreLayout.layout(model as any))
+            graph.fromJSON(props.store.model);
             graph.zoomToFit({ padding: 10, maxScale: 1 });
-        })
+        }, { name: '刷新模型到视图' });
         //#endregion
     }, []);
 

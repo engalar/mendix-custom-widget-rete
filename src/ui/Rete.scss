@@ -3,6 +3,7 @@
 .mxcn-resize {
     width: 100% !important;
     height: 100% !important;
+    overflow: hidden;
     min-height: 500px;
 
     svg text {
@@ -13,5 +14,9 @@
     }
     svg text::selection {
         background: none;
+    }
+    .x6-widget-selection-inner {
+        border: unset;
+        box-shadow: unset;
     }
 }

@@ -34,6 +34,7 @@ export class EdgeMxObject extends BaseMxObject {
 
 export class NodeMxObject extends BaseMxObject {
     label?: string;
+    shape?: string;
     /**
      *
      * @param guid mxobj guid
@@ -41,7 +42,7 @@ export class NodeMxObject extends BaseMxObject {
      */
     constructor(guid: string, private store: Store) {
         super(guid);
-        makeObservable(this, { label: observable, model: computed });
+        makeObservable(this, { label: observable, shape: observable, model: computed });
         this.update();
         this.onChange = () => {
             this.update();
@@ -50,6 +51,7 @@ export class NodeMxObject extends BaseMxObject {
     update() {
         if (this.mxObject) {
             this.label = this.mxObject.get(this.store.mxOption.activityLabel) as string;
+            this.shape = this.mxObject.get(this.store.mxOption.activityType) as string;
             //todo 临时方案
             this.store.graph?.getCellById(this.guid)?.setAttrByPath("text/text", this.label);
         }
@@ -57,7 +59,7 @@ export class NodeMxObject extends BaseMxObject {
     get model(): Node.Metadata {
         return {
             id: this.guid,
-            shape: "activity",
+            shape: this.shape ?? "activity",
             width: 100,
             height: 60,
             label: this.label

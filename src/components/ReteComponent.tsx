@@ -8,14 +8,121 @@ import { debounce } from "lodash-es";
 
 //#region graph register
 Graph.registerNode(
-    'event',
+    'Alpha',
     {
-        inherit: 'circle',
+        inherit: 'rect',
+        markup: [
+            {
+                tagName: 'rect',
+                selector: 'body',
+            },
+            {
+                tagName: 'text',
+                selector: 'label',
+            },
+        ],
         attrs: {
             body: {
-                strokeWidth: 2,
+                rx: 6,
+                ry: 6,
                 stroke: '#5F95FF',
-                fill: '#FFF',
+                fill: '#2b2bff',
+                strokeWidth: 1,
+                radius: 10,
+            },
+            label: {
+                fontSize: 12,
+                fill: 'white',
+            },
+        },
+    },
+    true,
+)
+Graph.registerNode(
+    'Beta',
+    {
+        inherit: 'rect',
+        markup: [
+            {
+                tagName: 'polygon',
+                selector: 'body',
+            },
+            {
+                tagName: 'text',
+                selector: 'label',
+            },
+        ],
+        attrs: {
+            body: {
+                points: '60,20 100,40 100,80 60,100 20,80 20,40',
+                stroke: '#5F95FF',
+                fill: '#ff2b2b',
+                strokeWidth: 1,
+            },
+            label: {
+                y: 30,
+                fontSize: 12,
+                fill: '#262626',
+            },
+        },
+    },
+    true,
+)
+Graph.registerNode(
+    'Result',
+    {
+        inherit: 'rect',
+        markup: [
+            {
+                tagName: 'rect',
+                selector: 'body',
+            },
+            {
+                tagName: 'text',
+                selector: 'label',
+            },
+        ],
+        attrs: {
+            body: {
+                rx: 6,
+                ry: 6,
+                stroke: '#5F95FF',
+                fill: '#005446',
+                strokeWidth: 1,
+            },
+            label: {
+                fontSize: 12,
+                fill: 'white',
+            },
+        },
+    },
+    true,
+)
+Graph.registerNode(
+    'TypeNode',
+    {
+        inherit: 'rect',
+        markup: [
+            {
+                tagName: 'rect',
+                selector: 'body',
+            },
+            {
+                tagName: 'text',
+                selector: 'label',
+            },
+        ],
+        attrs: {
+            body: {
+                rx: 6,
+                ry: 6,
+                stroke: '#5F95FF',
+                fill: '#ff82c0',
+                strokeWidth: 1,
+            },
+            label: {
+                fontSize: 12,
+                fill: '#262626',
             },
         },
     },

@@ -4,3 +4,4 @@ tests/
 *.log
 .env
 .DS_Store
+GPUCache

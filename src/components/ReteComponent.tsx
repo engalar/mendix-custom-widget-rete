@@ -226,7 +226,6 @@ export function ReteComponent(props: ReteComponentProps) {
         //#region 响应mobx
         autorun(() => {
             graph.fromJSON(props.store.model);
-            graph.zoomToFit({ padding: 10, maxScale: 1 });
         }, { name: '刷新模型到视图' });
         //#endregion
     }, []);

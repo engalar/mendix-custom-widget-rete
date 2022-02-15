@@ -1,6 +1,6 @@
 import { DagreLayout } from "@antv/layout";
 import { Graph, Model } from "@antv/x6";
-import { executeMicroflow, getObjectContext, getObjects, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
+import { executeMicroflow, getObjectContext, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
 import { difference } from "lodash-es";
 import { computed, configure, makeObservable, observable, toJS, when } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
@@ -30,8 +30,6 @@ export class Store {
             nodes: Array.from<NodeMxObject>(this.nodes.values()).map(d => d.model),
             edges: Array.from<EdgeMxObject>(this.edges.values()).map(d => d.model)
         };
-
-        console.log(111, model);
 
         const dagreLayout = new DagreLayout({
             type: "dagre",
@@ -71,13 +69,6 @@ export class Store {
         //#region 更新边
         const edgeGuids =
             this.mxOption.mxObject?.getReferences(getReferencePart(this.mxOption.edges, "referenceAttr")) ?? [];
-
-        getObjects(edgeGuids).then(objs => {
-            objs?.map(d => {
-                const newEdge = new EdgeMxObject(d.getGuid(), this.mxOption);
-                this.edges.set(d.getGuid(), newEdge);
-            });
-        });
 
         const deleteEdgeGuids = difference(Array.from(this.edges.keys()), edgeGuids);
         deleteEdgeGuids.forEach(d => {

@@ -33,8 +33,8 @@ export class Store {
 
         const dagreLayout = new DagreLayout({
             type: "dagre",
-            rankdir: "LR",
-            align: "UR",
+            rankdir: "TB",
+            align: "DL",
             ranksep: 30,
             nodesep: 15,
             controlPoints: true

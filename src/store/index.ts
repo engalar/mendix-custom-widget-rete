@@ -35,8 +35,8 @@ export class Store {
             type: "dagre",
             rankdir: "TB",
             align: "DL",
-            ranksep: 30,
-            nodesep: 15,
+            ranksep: 40,
+            nodesep: 35,
             controlPoints: true
         });
 

@@ -1,4 +1,5 @@
 import { useUnmount } from "ahooks";
+import classNames from "classnames";
 import { createElement, useEffect, useMemo } from "react";
 
 
@@ -36,7 +37,7 @@ export default function (props: ReteContainerProps) {
         store.dispose();
     })
 
-    return <div style={parseStyle(props.style)}>
+    return <div className={classNames(props.class)} style={parseStyle(props.style)}>
         <ReteComponent store={store}></ReteComponent>
     </div>;
 }

@@ -2,7 +2,7 @@ import { DagreLayout } from "@antv/layout";
 import { Graph, Model } from "@antv/x6";
 import { executeMicroflow, getObjectContext, getReferencePart } from "@jeltemx/mendix-react-widget-utils";
 import { difference } from "lodash-es";
-import { computed, configure, makeObservable, observable, toJS, when } from "mobx";
+import { autorun, computed, configure, makeObservable, observable, toJS } from "mobx";
 import { ReteContainerProps } from "../../typings/ReteProps";
 import { EdgeMxObject, NodeMxObject } from "./objects/OptionItem";
 
@@ -103,10 +103,13 @@ export class Store {
             graph: observable
         });
 
-        when(
-            () => !!this.mxOption.mxObject,
-            () => {
+        autorun(() => {
+            console.log(this.mxOption.mxObject);
+            if (this.mxOption.mxObject) {
                 this.update();
+                if (this.sub) {
+                    mx.data.unsubscribe(this.sub);
+                }
 
                 this.sub = mx.data.subscribe(
                     {
@@ -122,13 +125,8 @@ export class Store {
                     //@ts-ignore
                     this.mxOption.mxform
                 );
-            },
-            {
-                onError(e) {
-                    console.error(e);
-                }
             }
-        );
+        });
     }
 
     onSelect(guids: string[]) {
